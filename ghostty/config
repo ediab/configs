@@ -8,8 +8,6 @@
 font-family = "Maple Mono NF"
 font-size = 13
 font-thicken = true
-adjust-cell-height = 2
-adjust-cell-width = 2
 
 # --- Theme and Colors ---
 theme = TokyoNight
