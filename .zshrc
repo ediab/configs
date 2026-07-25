@@ -190,6 +190,11 @@ alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias sibyl-web="cd ~/Dev/Sibyl && uv run sibyl-web"
 alias notes-publish='rsync -a --delete "/Users/eliasdiab/Library/Mobile Documents/iCloud~md~obsidian/Documents/Elias'\''s Vault/Published/" ~/Dev/notes/content/ && cd ~/Dev/notes && npx quartz sync --no-pull'
 
+# --- tmux (sessions that survive disconnect/reboot) ---
+alias tl='tmux ls'                # what's running?
+alias tn='tmux new -s'            # tn work
+alias tt='tmux attach -t '        # tt work
+
 # ==============================================
 # 6. FUNCTIONS
 # ==============================================
