@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "0.82.0",
   "theme": "tokyo-night",
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "glm-5.2",
   "defaultThinkingLevel": "max",
   "packages": [
     "npm:pi-web-access",

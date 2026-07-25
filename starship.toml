@@ -1,0 +1,116 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+command_timeout = 1000
+scan_timeout = 30
+
+# ── Powerline layout ──────────────────────────────────────────
+#   = left-cap,   = right-pointing chevron
+# dir → git → languages → time, each with its own background
+format = """
+[](fg:#7aa2f7 bg:none)\
+$directory\
+[](fg:#7aa2f7 bg:#bb9af7)\
+$git_branch\
+$git_status\
+[](fg:#bb9af7 bg:#9ece6a)\
+$python\
+$rust\
+$nodejs\
+$fill\
+[](fg:#9ece6a bg:#565f89)\
+$time\
+[ ](fg:#565f89 bg:none)\
+$line_break\
+$character"""
+
+right_format = ""   # time now in the powerline chain
+
+palette = "tokyo_night"
+
+[palettes.tokyo_night]
+blue   = "#7aa2f7"
+purple = "#bb9af7"
+green  = "#9ece6a"
+yellow = "#e0af68"
+red    = "#f7768e"
+grey   = "#565f89"
+
+# ── Modules ───────────────────────────────────────────────────
+
+[directory]
+style = "bg:#7aa2f7 fg:#1a1b26"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncate_to_repo = true
+truncation_symbol = "…/"
+read_only = " RO"
+
+[git_branch]
+style = "bg:#bb9af7 fg:#1a1b26"
+format = "[ $branch]($style) "
+
+[git_status]
+style = "bg:#bb9af7 fg:#1a1b26"
+ignore_submodules = true
+format = '([$all_status$ahead_behind]($style)) '
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕${count}"
+untracked = "?${count}"
+stashed = '$'
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[python]
+style = "bg:#9ece6a fg:#1a1b26"
+format = '[ $virtualenv]($style)'
+
+[rust]
+style = "bg:#9ece6a fg:#1a1b26"
+format = '[ $version]($style)'
+
+[nodejs]
+style = "bg:#9ece6a fg:#1a1b26"
+format = '[ $version]($style)'
+
+[time]
+disabled = false
+style = "bg:#565f89 fg:#c0caf5"
+time_format = "%H:%M"
+format = "[ $time ]($style)"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[cmd_duration]
+min_time = 2000
+style = "yellow"
+format = "took [$duration]($style) "
+
+[status]
+disabled = false
+style = "bold red"
+symbol = "✘"
+map_symbol = true
+format = '[$symbol$common_meaning$signal_name$maybe_int]($style) '
+
+[jobs]
+style = "bold yellow"
+number_threshold = 1
+format = "[&$number]($style) "
+
+[username]
+show_always = false
+ssh_only = true
+style_user = "grey"
+format = "[$user]($style)@"
+
+[hostname]
+ssh_only = true
+style = "bold grey"
+format = "[$hostname]($style) "
