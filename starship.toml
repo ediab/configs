@@ -4,22 +4,21 @@ add_newline = true
 command_timeout = 1000
 scan_timeout = 30
 
-# ── Powerline layout ──────────────────────────────────────────
-#   = left-cap,   = right-pointing chevron (Nerd Font E0B0/E0B2)
-# dir → git/languages (2 colors: empty segments stay clean, no slivers)
+# Text-only Tokyo Night — soft 2-line
+# L1: [user@host ]dir branch [dirty] [venv] [duration]
+# L2: [status] [jobs] ❯
 format = """
-[](fg:#7aa2f7 bg:none)\
+$username\
+$hostname\
 $directory\
-[](fg:#7aa2f7 bg:#bb9af7)\
 $git_branch\
 $git_status\
 $python\
-$rust\
-$nodejs\
-[ ](fg:#bb9af7 bg:none)\
 $cmd_duration\
 $line_break\
-$status$jobs$character"""
+$status\
+$jobs\
+$character"""
 
 right_format = ""
 
@@ -36,21 +35,23 @@ grey   = "#565f89"
 # ── Modules ───────────────────────────────────────────────────
 
 [directory]
-style = "bg:#7aa2f7 fg:#1a1b26"
-format = "[ $path ]($style)"
+style = "fg:blue"
+format = "[$path]($style) "
 truncation_length = 3
 truncate_to_repo = true
 truncation_symbol = "…/"
 read_only = " RO"
+read_only_style = "fg:red"
 
 [git_branch]
-style = "bg:#bb9af7 fg:#1a1b26"
-format = "[ $branch]($style) "
+style = "fg:purple"
+format = "[$branch]($style) "
 
 [git_status]
-style = "bg:#bb9af7 fg:#1a1b26"
+style = "fg:yellow"
 ignore_submodules = true
-format = '([$all_status$ahead_behind]($style)) '
+# Parent () = hidden when clean (no status, not ahead/behind)
+format = '([${all_status}${ahead_behind}]($style) )'
 conflicted = "="
 ahead = "⇡${count}"
 behind = "⇣${count}"
@@ -63,45 +64,39 @@ renamed = "»${count}"
 deleted = "✘${count}"
 
 [python]
-style = "bg:#bb9af7 fg:#1a1b26"
-format = '[ $virtualenv]($style)'
-
-[rust]
-style = "bg:#bb9af7 fg:#1a1b26"
-format = '[ $version]($style)'
-
-[nodejs]
-style = "bg:#bb9af7 fg:#1a1b26"
-format = '[ $version]($style)'
+style = "fg:green"
+# Parent () = hidden when no venv
+format = '([$virtualenv]($style) )'
 
 [cmd_duration]
 min_time = 2000
-style = "yellow"
-format = " [$duration]($style) "
+style = "fg:grey"
+format = "[$duration]($style) "
 
 [status]
 disabled = false
-style = "bold red"
+style = "bold fg:red"
 symbol = "✘"
 map_symbol = true
-format = '[$symbol$common_meaning$signal_name$maybe_int]($style) '
+format = '[$symbol]($style) '
 
 [jobs]
-style = "bold yellow"
+style = "bold fg:yellow"
 number_threshold = 1
 format = "[&$number]($style) "
 
 [character]
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
+success_symbol = "[❯](bold fg:green)"
+error_symbol = "[❯](bold fg:red)"
 
 [username]
+# show_always=false → only root or SSH (ssh_only removed in Starship 1.25)
 show_always = false
-ssh_only = true
-style_user = "grey"
+style_user = "fg:grey"
 format = "[$user]($style)@"
 
 [hostname]
 ssh_only = true
-style = "bold grey"
+ssh_symbol = ""
+style = "fg:grey"
 format = "[$hostname]($style) "

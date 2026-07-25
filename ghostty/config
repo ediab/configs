@@ -5,8 +5,7 @@
 # View options: ghostty +show-config --default --docs
 
 # --- Typography ---
-# MesloLGS NF required for Powerlevel10k — if p10k looks broken, ensure it's installed
-font-family = "MesloLGS NF"
+font-family = "Maple Mono NF"
 font-size = 13
 font-thicken = true
 adjust-cell-height = 2
