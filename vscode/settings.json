@@ -13,6 +13,8 @@
   "workbench.editor.limit.value": 8,
   "extensions.ignoreRecommendations": true, // no "you should install X" nudges
   "update.showReleaseNotes": false, // no release-notes tab after every update
+  "telemetry.telemetryLevel": "off", // no telemetry — minimal setups leak this default
+  "workbench.tips.enabled": false, // kill the "Tip of the Day" popup
   "zenMode.hideStatusBar": true,
   "zenMode.hideActivityBar": true,
   "zenMode.centerLayout": true,
@@ -38,7 +40,8 @@
     "sideBar.border": "#00000000",
     "editorGroupHeader.tabsBorder": "#00000000",
     "editorGroup.border": "#00000000",
-    "panel.border": "#00000000"
+    "panel.border": "#00000000",
+    "editorRuler.foreground": "#2c3142" // dim the 88/100 rulers (Tokyo Night Storm) so they're a quiet guide, not bright red
   },
   // ==========================================
   // --- Typography: Maple Mono ---
@@ -89,6 +92,8 @@
   "editor.formatOnSave": true,
   "editor.formatOnSaveMode": "file",
   "editor.formatOnSaveTimeout": 5000,
+  "editor.formatOnPaste": true, // pasted code runs through your formatter too
+  "editor.lineNumbers": "interval", // only every 10th line — quieter gutter, still a sense of where you are
   "editor.renderWhitespace": "selection",
   "editor.rulers": [
     88,
@@ -96,6 +101,9 @@
   ],
   "editor.wordWrap": "on",
   "editor.scrollBeyondLastLine": false,
+  "editor.overviewRulerBorder": false, // drop the hairline separating the overview ruler from the gutter
+  "editor.scrollbar.vertical": "auto", // scrollbar slides out when idle — harmonic with smoothScrolling
+  "editor.scrollbar.horizontal": "auto",
   "editor.inlayHints.enabled": "offUnlessPressed",
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
@@ -111,7 +119,20 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.excludeGitIgnore": true,
+  "workbench.tree.renderIndentGuides": "none", // no faint vertical guide lines in the explorer tree
   "multiDiffEditor.experimental.enabled": true,
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.venv": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true
+  },
   "search.exclude": {
     "**/.git": true,
     "**/.venv": true,
@@ -168,6 +189,7 @@
   "terminal.integrated.fontFamily": "'Maple Mono NF', Menlo, Monaco, monospace",
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.smoothScrolling": true,
+  "terminal.integrated.stickyScroll.enabled": false, // no sticky command header in long sessions
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.enableMultiLinePasteWarning": "auto", // don't nag on every multi-line paste
   "terminal.integrated.defaultLocation": "view",
