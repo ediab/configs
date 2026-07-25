@@ -5,26 +5,23 @@ command_timeout = 1000
 scan_timeout = 30
 
 # ── Powerline layout ──────────────────────────────────────────
-#   = left-cap,   = right-pointing chevron
-# dir → git → languages → time, each with its own background
+#   = left-cap,   = right-pointing chevron (Nerd Font E0B0/E0B2)
+# dir → git/languages (2 colors: empty segments stay clean, no slivers)
 format = """
 [](fg:#7aa2f7 bg:none)\
 $directory\
 [](fg:#7aa2f7 bg:#bb9af7)\
 $git_branch\
 $git_status\
-[](fg:#bb9af7 bg:#9ece6a)\
 $python\
 $rust\
 $nodejs\
-$fill\
-[](fg:#9ece6a bg:#565f89)\
-$time\
-[ ](fg:#565f89 bg:none)\
+[ ](fg:#bb9af7 bg:none)\
+$cmd_duration\
 $line_break\
-$character"""
+$status$jobs$character"""
 
-right_format = ""   # time now in the powerline chain
+right_format = ""
 
 palette = "tokyo_night"
 
@@ -66,31 +63,21 @@ renamed = "»${count}"
 deleted = "✘${count}"
 
 [python]
-style = "bg:#9ece6a fg:#1a1b26"
+style = "bg:#bb9af7 fg:#1a1b26"
 format = '[ $virtualenv]($style)'
 
 [rust]
-style = "bg:#9ece6a fg:#1a1b26"
+style = "bg:#bb9af7 fg:#1a1b26"
 format = '[ $version]($style)'
 
 [nodejs]
-style = "bg:#9ece6a fg:#1a1b26"
+style = "bg:#bb9af7 fg:#1a1b26"
 format = '[ $version]($style)'
-
-[time]
-disabled = false
-style = "bg:#565f89 fg:#c0caf5"
-time_format = "%H:%M"
-format = "[ $time ]($style)"
-
-[character]
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
 
 [cmd_duration]
 min_time = 2000
 style = "yellow"
-format = "took [$duration]($style) "
+format = " [$duration]($style) "
 
 [status]
 disabled = false
@@ -103,6 +90,10 @@ format = '[$symbol$common_meaning$signal_name$maybe_int]($style) '
 style = "bold yellow"
 number_threshold = 1
 format = "[&$number]($style) "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
 
 [username]
 show_always = false
