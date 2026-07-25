@@ -109,29 +109,23 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+  # CHANGED: lazy-load `pyenv init -` and `pyenv virtualenv-init -`.
+  # The --path init (above) is cheap and sets up shims; the full init
+  # (completions + pyenv shell) is deferred until first `pyenv` call.
+  pyenv() {
+    unfunction pyenv virtualenv 2>/dev/null
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    pyenv "$@"
+  }
+  virtualenv() {
+    unfunction pyenv virtualenv 2>/dev/null
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    virtualenv "$@"
+  }
 fi
 
-# Conda — lazy loaded. The old eager `conda shell.zsh hook` was the single most
-# expensive line in this file; this defers it until the first `conda` call.
-#
-# ONE-TIME SETUP, run this once by hand then never again:
-#   conda config --set auto_activate_base false
-# (The old config did this on *every* shell start, rewriting ~/.condarc each time.)
-conda() {
-  unfunction conda
-  local __conda_setup
-  __conda_setup="$('/Users/eliasdiab/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
-  if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-  elif [ -f "/Users/eliasdiab/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-    . "/Users/eliasdiab/opt/anaconda3/etc/profile.d/conda.sh"
-  else
-    export PATH="/Users/eliasdiab/opt/anaconda3/bin:$PATH"
-  fi
-  conda "$@"
-}
 
 # ==============================================
 # 5. ALIASES
@@ -253,6 +247,10 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --icons --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group '<' '>'
+
+# completion appearance
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' group-name ''
 [[ -f "/opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh" ]] && \
   source "/opt/homebrew/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
 
@@ -263,14 +261,14 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
 # --- 8.5 autosuggestions + syntax highlighting (must load LAST) ---
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_STRATEGY=(history)
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1        # measurably faster on long command lines
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 
 [[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-[[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
-  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -f /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] && \
+  source /opt/homebrew/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # ==============================================
 # 9. KEYBINDINGS  (after the plugins that define the widgets)
