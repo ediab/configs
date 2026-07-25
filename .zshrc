@@ -71,6 +71,7 @@ export EDITOR='code --wait'
 export VISUAL="$EDITOR"
 
 export ENABLE_TOOL_SEARCH=true
+export PI_ASK_USER_DISPLAY_MODE=inline
 
 # Homebrew (Apple Silicon)
 [[ -d "/opt/homebrew/bin" ]] && export PATH="/opt/homebrew/bin:$PATH"

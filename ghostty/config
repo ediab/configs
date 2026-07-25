@@ -10,6 +10,7 @@ font-family = "MesloLGS NF"
 font-size = 13
 font-thicken = true
 adjust-cell-height = 2
+adjust-cell-width = 2
 
 # --- Theme and Colors ---
 theme = TokyoNight
@@ -17,8 +18,8 @@ theme = TokyoNight
 # --- Window and Appearance ---
 window-decoration = auto
 background-opacity = 1
-window-padding-x = 10
-window-padding-y = 8
+window-padding-x = 14
+window-padding-y = 12
 window-save-state = always
 window-theme = auto
 window-inherit-working-directory = true
