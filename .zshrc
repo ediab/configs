@@ -73,6 +73,12 @@ export VISUAL="$EDITOR"
 export ENABLE_TOOL_SEARCH=true
 export PI_ASK_USER_DISPLAY_MODE=inline
 
+# pi-subagents tmux integration
+export PI_SUBAGENT_MUX=tmux
+export PI_SUBAGENT_ENABLE_SET_TAB_TITLE=1
+export PI_SUBAGENT_RENAME_TMUX_WINDOW=1
+export PI_SUBAGENT_SHELL_READY_DELAY_MS=1200
+
 # Homebrew (Apple Silicon)
 [[ -d "/opt/homebrew/bin" ]] && export PATH="/opt/homebrew/bin:$PATH"
 
@@ -194,6 +200,7 @@ alias notes-publish='rsync -a --delete "/Users/eliasdiab/Library/Mobile Document
 alias tl='tmux ls'                # what's running?
 alias tn='tmux new -s'            # tn work
 alias tt='tmux attach -t '        # tt work
+alias pio='PI_ORCHESTRATOR_MODE=1 tmux new -A -s orchestrator "pi"'  # pi orchestrator session
 
 # ==============================================
 # 6. FUNCTIONS
