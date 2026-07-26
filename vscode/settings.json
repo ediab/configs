@@ -28,6 +28,8 @@
   "explorer.openEditors.visible": 1, // hides the Open Editors section entirely
   "workbench.statusBar.visible": false, // removes the bottom bar completely
   "chat.disableAIFeatures": true, // hides and disables built-in Chat / Copilot features
+  "github.copilot.enable": false, // disables Copilot completions entirely
+  "github.copilot.enable": false, // disables Copilot completions entirely
   "breadcrumbs.enabled": false, // Zed has no breadcrumb trail; reclaim the vertical space
   "editor.stickyScroll.enabled": false, // no floating header bar over the code
   "editor.minimap.enabled": false,
