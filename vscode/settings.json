@@ -189,7 +189,8 @@
   "terminal.integrated.fontFamily": "'Maple Mono NF', Menlo, Monaco, monospace",
   "terminal.integrated.scrollback": 50000,
   "terminal.integrated.smoothScrolling": true,
-  "terminal.integrated.stickyScroll.enabled": false, // no sticky command header in long sessions
+  "terminal.integrated.stickyScroll.enabled": true,
+  "terminal.integrated.shellIntegration.enabled": true,
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.enableMultiLinePasteWarning": "auto", // only warns in shells without bracketed paste; set "never" to silence it everywhere
   "terminal.integrated.defaultLocation": "view",
