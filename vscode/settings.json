@@ -8,7 +8,7 @@
   "window.commandCenter": false, // one less bar of chrome up top
   "workbench.panel.showLabels": false,
   "workbench.editor.labelFormat": "short",
-  "workbench.editor.highlightModifiedTabs": true, // single-click opens a throwaway preview tab instead of pinning one
+  "workbench.editor.highlightModifiedTabs": true, // dot on tabs with unsaved changes
   "workbench.editor.limit.enabled": true, // caps open tabs, auto-closes the oldest
   "workbench.editor.limit.value": 8,
   "extensions.ignoreRecommendations": true, // no "you should install X" nudges
@@ -25,11 +25,9 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.layoutControl.enabled": false,
   "window.title": "${activeEditorMedium}${separator}${rootName}${separator}${activeRepositoryBranchName}${dirty}",
-  "explorer.openEditors.visible": 1, // hides the Open Editors section entirely
+  "explorer.openEditors.visible": 1, // max rows the Open Editors pane shows before scrolling; to hide the pane entirely, right-click the Explorer header and uncheck it
   "workbench.statusBar.visible": false, // removes the bottom bar completely
   "chat.disableAIFeatures": true, // hides and disables built-in Chat / Copilot features
-  "github.copilot.enable": false, // disables Copilot completions entirely
-  "github.copilot.enable": false, // disables Copilot completions entirely
   "breadcrumbs.enabled": false, // Zed has no breadcrumb trail; reclaim the vertical space
   "editor.stickyScroll.enabled": false, // no floating header bar over the code
   "editor.minimap.enabled": false,
@@ -107,8 +105,9 @@
   "editor.scrollbar.vertical": "auto", // scrollbar slides out when idle — harmonic with smoothScrolling
   "editor.scrollbar.horizontal": "auto",
   "editor.inlayHints.enabled": "offUnlessPressed",
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1000,
+  // NOT "afterDelay": that mode skips formatOnSave and codeActionsOnSave (ruff fixAll /
+  // organizeImports below) unless you save explicitly. onFocusChange runs them every time.
+  "files.autoSave": "onFocusChange",
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
@@ -122,7 +121,6 @@
   "explorer.confirmDragAndDrop": false,
   "explorer.excludeGitIgnore": true,
   "workbench.tree.renderIndentGuides": "none", // no faint vertical guide lines in the explorer tree
-  "multiDiffEditor.experimental.enabled": true,
   "files.exclude": {
     "**/.DS_Store": true,
     "**/.git": true,
@@ -193,12 +191,12 @@
   "terminal.integrated.smoothScrolling": true,
   "terminal.integrated.stickyScroll.enabled": false, // no sticky command header in long sessions
   "terminal.integrated.copyOnSelection": true,
-  "terminal.integrated.enableMultiLinePasteWarning": "auto", // don't nag on every multi-line paste
+  "terminal.integrated.enableMultiLinePasteWarning": "auto", // only warns in shells without bracketed paste; set "never" to silence it everywhere
   "terminal.integrated.defaultLocation": "view",
   "workbench.panel.defaultLocation": "right",
   "terminal.integrated.fontSize": 13,
   "terminal.integrated.lineHeight": 1.3,
-    "terminal.integrated.gpuAcceleration": "on",
+  "terminal.integrated.gpuAcceleration": "on",
   "terminal.integrated.profiles.osx": {
     "zsh": {
       "path": "/bin/zsh",
@@ -215,7 +213,6 @@
   "remote.SSH.connectTimeout": 300,
   "remote.SSH.useLocalServer": true,
   "chat.mcp.gallery.enabled": false,
-  "console-ninja.featureSet": "Community",
   "workbench.browser.showInTitleBar": false,
-  "window.customTitleBarVisibility": "never" // drop this line if you don't have the Console Ninja extension installed
+  "window.customTitleBarVisibility": "never" // likely inert while window.titleBarStyle is "native" — kept for if you ever switch to "custom"
 }
