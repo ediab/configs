@@ -4,6 +4,9 @@ set -euo pipefail
 REPO="$HOME/dev/configs"
 cd "$REPO"
 
+# Refresh VS Code extensions list
+code --list-extensions 2>/dev/null > vscode/extensions.txt
+
 # Only act if there are changes
 if [ -z "$(git status --porcelain)" ]; then
   exit 0
