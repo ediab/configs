@@ -21,6 +21,17 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 - `docs/tmux.md` — Beginner's guide tuned to this exact tmux config
 - `docs/tmux_proposal.md` — Reference proposal for pi-subagents tmux integration
 
+## Auto-commit
+
+A launch agent auto-commits and pushes changes every 15 minutes:
+
+```sh
+cp ~/dev/configs/launchd/com.diab.autocommit-configs.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.diab.autocommit-configs.plist
+```
+
+This also keeps `vscode/extensions.txt` up to date automatically.
+
 ## Setup on a new machine
 
 ```sh
@@ -31,6 +42,10 @@ ln -s ~/dev/configs/starship.toml ~/.config/starship.toml
 ln -s ~/dev/configs/ghostty/config ~/.config/ghostty/config
 ln -s ~/dev/configs/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 ln -s ~/dev/configs/vscode/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+
+# Auto-commit agent
+cp ~/dev/configs/launchd/com.diab.autocommit-configs.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.diab.autocommit-configs.plist
 ```
 
 ## Firefox

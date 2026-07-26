@@ -21,7 +21,7 @@ setopt NO_FLOW_CONTROL        # frees up ctrl-s / ctrl-q
 # 1. OH-MY-ZSH
 # ==============================================
 
-export ZSH="/Users/eliasdiab/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Theme unset — Starship (section 8) owns the prompt.
 ZSH_THEME=""
@@ -194,7 +194,7 @@ alias agy="antigravity --dangerously-skip-permissions"
 # --- misc ---
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias sibyl-web="cd ~/Dev/Sibyl && uv run sibyl-web"
-alias notes-publish='rsync -a --delete "/Users/eliasdiab/Library/Mobile Documents/iCloud~md~obsidian/Documents/Elias'\''s Vault/Published/" ~/Dev/notes/content/ && cd ~/Dev/notes && npx quartz sync --no-pull'
+alias notes-publish='rsync -a --delete "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Elias'\''s Vault/Published/" ~/Dev/notes/content/ && cd ~/Dev/notes && npx quartz sync --no-pull'
 
 # --- tmux (sessions that survive disconnect/reboot) ---
 alias tl='tmux ls'                # what's running?
@@ -208,7 +208,7 @@ alias pio='PI_ORCHESTRATOR_MODE=1 tmux new -A -s orchestrator "pi"'  # pi orches
 
 # Run the IRC bot from any directory, defaulting to the repo config.
 ircbot() {
-  uv run --project /Users/eliasdiab/Dev/irc_bot irc-bot "${@:-/Users/eliasdiab/Dev/irc_bot/bot_config.md}"
+  uv run --project $HOME/Dev/irc_bot irc-bot "${@:-$HOME/Dev/irc_bot/bot_config.md}"
 }
 
 # Delete local branches whose remotes are gone.
