@@ -46,7 +46,6 @@ To restore on a new machine, close Firefox and copy the files into a fresh profi
 ```sh
 PROFILE=~/".mozilla/firefox/xxxxxxxx.your-profile"
 cp ~/dev/configs/firefox/prefs.js "$PROFILE/"
-cp ~/dev/configs/firefox/extensions.json "$PROFILE/"
 cp ~/dev/configs/firefox/extension-preferences.json "$PROFILE/"
 cp ~/dev/configs/firefox/extension-settings.json "$PROFILE/"
 cp ~/dev/configs/firefox/containers.json "$PROFILE/"

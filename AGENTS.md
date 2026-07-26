@@ -25,7 +25,7 @@ Firefox actively writes to its profile files, so they're synced one-way into thi
 cd ~/dev/configs/firefox && ./sync.sh
 ```
 
-The sync script copies: `prefs.js`, `extensions.json`, extension prefs/settings, `containers.json`, `handlers.json`, `search.json.mozlz4`, `chrome/userChrome.css`, `chrome/userContent.css`, `chrome/theme/`, and `bookmarkbackups/`.
+The sync script copies: `prefs.js`, extension prefs/settings, `containers.json`, `handlers.json`, `search.json.mozlz4`, `chrome/userChrome.css`, `chrome/userContent.css`, `chrome/theme/`, and `bookmarkbackups/`.
 
 Sensitive files (cookies, logins, certs) and large auto-generated data (storage, favicons, extensions XPI) are never synced.
 

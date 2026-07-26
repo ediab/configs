@@ -12,7 +12,6 @@ fi
 
 # Core configs
 cp "$PROFILE/prefs.js"              "$DEST/"
-cp "$PROFILE/extensions.json"       "$DEST/"
 cp "$PROFILE/extension-preferences.json" "$DEST/"
 cp "$PROFILE/extension-settings.json"    "$DEST/"
 cp "$PROFILE/containers.json"       "$DEST/"
