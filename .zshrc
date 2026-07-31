@@ -152,6 +152,11 @@ alias la="eza --icons --group-directories-first -la"
 alias lt="eza --icons --tree --level=2"
 alias cat="bat --paging=never --style=plain"   # no surprise pager in scripts
 
+# --- search ---
+alias rgi='command rg -i'
+alias rgf='command rg --files'
+alias rgh='command rg --hidden --glob "!.git"'
+
 # --- git ---
 alias gs='git status'
 alias gp='git push'
