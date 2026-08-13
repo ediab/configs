@@ -29,9 +29,9 @@ The sync script copies: `prefs.js`, extension prefs/settings, `containers.json`,
 
 Sensitive files (cookies, logins, certs) and large auto-generated data (storage, favicons, extensions XPI) are never synced.
 
-## pi-elias harness (NOT in this repo)
+## pi-dotfiles harness (NOT in this repo)
 
-Pi agent extensions, skills, and settings live in `~/dev/pi-elias/` and are deployed to `~/.pi/agent/` by `install.sh`/`update.sh`. When making pi harness changes, edit in `~/dev/pi-elias/` and run `update.sh`. If `pi` itself rewrites `settings.json`, re-sync the live copy back to `~/dev/pi-elias/` to avoid drift.
+Pi agent extensions, skills, and settings live in `~/dev/pi-dotfiles/` and are deployed to `~/.pi/agent/` by `install.sh`/`update.sh`. When making pi harness changes, edit in `~/dev/pi-dotfiles/` and run `update.sh`. If `pi` itself rewrites `settings.json`, re-sync the live copy back to `~/dev/pi-dotfiles/` to avoid drift.
 
 ## VS Code
 
