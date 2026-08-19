@@ -4,8 +4,12 @@ set -euo pipefail
 REPO="$HOME/dev/configs"
 cd "$REPO"
 
-# Refresh VS Code extensions list
-code --list-extensions 2>/dev/null > vscode/extensions.txt
+# launchd runs with a minimal PATH (/usr/bin:/bin:/usr/sbin:/sbin);
+# add Homebrew so code/git are found.
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+# Refresh VS Code extensions list (best-effort: never block the commit)
+code --list-extensions 2>/dev/null > vscode/extensions.txt || true
 
 # Only act if there are changes
 if [ -z "$(git status --porcelain)" ]; then
