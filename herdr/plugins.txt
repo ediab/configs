@@ -1,6 +1,4 @@
-3 plugins installed:
-- herdr-navigator (Herdr Navigator) enabled [github:thanhdat77/herdr-navigator@v0.3.3]
-  config: /Users/eliasdiab/.config/herdr/plugins/config/herdr-navigator
+2 plugins installed:
 - persiyanov.reviewr (reviewr) enabled [github:persiyanov/herdr-reviewr@a4224541751a5030986e159aedb69e6508716e15]
   config: /Users/eliasdiab/.config/herdr/plugins/config/persiyanov.reviewr
 - tab-smart-rename (Smart Rename) enabled [github:iurysza/herdr-tab-smart-rename@a7bf8e4105732629678fcc2a3203376c07cacc95]
