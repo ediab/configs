@@ -94,9 +94,8 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
-# Local bins, opencode, antigravity (dupes collapse via typeset -U above)
+# Local bins, antigravity (dupes collapse via typeset -U above)
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.opencode/bin:$PATH"
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
 
@@ -180,14 +179,12 @@ alias lg='lazygit'
 alias glm='ANTHROPIC_MODEL=GLM-4.7 ANTHROPIC_BASE_URL=$ZAI_BASE_URL ANTHROPIC_AUTH_TOKEN=$ZAI_API_KEY claude --dangerously-skip-permissions'
 alias claude="claude --dangerously-skip-permissions --model opusplan"
 alias codex="codex --dangerously-bypass-approvals-and-sandbox"
-alias oc="opencode --yolo"
 alias gemini="NODE_NO_WARNINGS=1 gemini"
 alias gem="gemini"
 
 # Unaliased escape hatches, for when you're somewhere you don't want a yolo agent.
 alias claude-safe='command claude'
 alias codex-safe='command codex'
-alias oc-safe='command opencode'
 
 # --- antigravity ---
 alias agm="antigravity --manager"
