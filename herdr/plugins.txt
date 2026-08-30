@@ -1,5 +1,5 @@
-2 plugins installed:
-- persiyanov.reviewr (reviewr) enabled [github:persiyanov/herdr-reviewr@a4224541751a5030986e159aedb69e6508716e15]
-  config: /Users/eliasdiab/.config/herdr/plugins/config/persiyanov.reviewr
-- tab-smart-rename (Smart Rename) enabled [github:iurysza/herdr-tab-smart-rename@a7bf8e4105732629678fcc2a3203376c07cacc95]
-  config: /Users/eliasdiab/.config/herdr/plugins/config/tab-smart-rename
+3 plugins installed:
+  - annotate (Annotate) enabled [github:plannotator/herdr-annotate@5d94eadfed96e4064b692718cef143afeb0931d3]
+    config: /Users/eliasdiab/.config/herdr/plugins/config/annotate
+  - tab-smart-rename (Smart Rename) enabled [github:iurysza/herdr-tab-smart-rename@a7bf8e4105732629678fcc2a3203376c07cacc95]
+    config: /Users/eliasdiab/.config/herdr/plugins/config/tab-smart-rename
