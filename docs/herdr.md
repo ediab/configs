@@ -1,16 +1,25 @@
-# Herdr keybindings guide
+# Herdr — keybinding reference
 
-Herdr is a terminal workspace manager for AI coding agents. This covers every keybinding active in this config: built-ins, plus the custom ones added in `~/.config/herdr/config.toml`.
+Press **`ctrl+b`** (prefix) first, then the key. All bindings below are active in this config (`herdr/config.toml`). Fits one page when printed from the markdown preview (A4, default margins).
 
-Prefix key: **`ctrl+b`** (Herdr default, not overridden here). Press the prefix first, then the key.
+<style>
+@media print {
+  h1 { font-size: 14pt; margin: 0 0 6pt; }
+  h2 { font-size: 11pt; margin: 8pt 0 2pt; }
+  body { font-size: 9pt; }
+  table { font-size: 8.5pt; }
+  th, td { padding: 2px 6px; }
+  blockquote { margin: 4pt 0; font-size: 8.5pt; }
+}
+</style>
 
-## Basics
+## Core
 
 | Keys | Action |
 |------|--------|
 | `prefix+?` | Help |
 | `prefix+s` | Settings |
-| `prefix+q` | Detach (leave Herdr running) |
+| `prefix+q` | Detach (Herdr keeps running) |
 
 ## Workspaces
 
@@ -21,7 +30,7 @@ Prefix key: **`ctrl+b`** (Herdr default, not overridden here). Press the prefix 
 | `prefix+shift+n` | New workspace |
 | `prefix+shift+g` | New worktree |
 | `prefix+shift+w` | Rename workspace |
-| `prefix+shift+d` | Close workspace (asks to confirm) |
+| `prefix+shift+d` | Close workspace (confirm) |
 
 ## Tabs
 
@@ -42,45 +51,28 @@ Prefix key: **`ctrl+b`** (Herdr default, not overridden here). Press the prefix 
 | `prefix+h/j/k/l` | Focus left / down / up / right |
 | `prefix+tab` / `prefix+shift+tab` | Cycle panes |
 | `prefix+x` | Close pane |
-| `prefix+z` | Zoom (fullscreen) pane |
-| `prefix+r` | Resize mode (arrows to resize, esc to exit) |
+| `prefix+z` | Zoom pane (fullscreen) |
+| `prefix+r` | Resize mode (arrows, `esc` exits) |
 | `prefix+e` | Edit scrollback |
 | `prefix+b` | Toggle sidebar |
 | `prefix+shift+p` | Rename pane |
 
-## Custom commands (config.toml)
-
-### Annotate plugin — `plannotator/herdr-annotate`
-
-Annotate terminal selections and agent output; copy annotations as Markdown context for agents.
+## Annotate (plannotator/herdr-annotate)
 
 | Keys | Action |
 |------|--------|
-| Select text, then `prefix+a` | Annotate the selection |
-| `prefix+shift+a` | Copy all annotations to clipboard as Markdown |
-| `prefix+m` | Manage annotations (browse, copy, archive, delete) |
-| `prefix+o` | Review documents (e.g. plan .md files) in the focused pane's folder |
-| `prefix+shift+o` | Review the focused agent's last reply, send feedback back |
+| Select text, then `prefix+a` | Annotate the selection (`ctrl+s` saves) |
+| `prefix+shift+a` | Copy all annotations as Markdown |
+| `prefix+m` | Manage: `y` copy · `c` copy all · `Shift+C` copy+archive · `d d` delete |
+| `prefix+o` | Review documents in the focused pane's folder |
+| `prefix+shift+o` | Review the agent's last reply, send feedback (`e`) |
 | Ctrl-click a `file://….md` link | Open that file in the annotator |
 
-### Smart Rename plugin — `iurysza/herdr-tab-smart-rename`
-
-AI-generated names for tabs and workspaces.
+## Smart Rename (iurysza/herdr-tab-smart-rename)
 
 | Keys | Action |
 |------|--------|
 | `prefix+t` | Smart-rename current tab |
 | `prefix+alt+t` | Smart-rename all tabs |
 
-### reviewr — diff review pane
-
-| Keys | Action |
-|------|--------|
-| `cmd+r` | Toggle the reviewr diff-review pane |
-
-## Installed plugins
-
-Tracked in `herdr/plugins.txt` (regenerate with `herdr plugin list`):
-
-- `annotate` (plannotator/herdr-annotate) — annotations, see table above
-- `tab-smart-rename` (iurysza/herdr-tab-smart-rename) — tab naming
+> Installed plugins: `annotate`, `tab-smart-rename` — tracked in `herdr/plugins.txt` (regenerate with `herdr plugin list`).
