@@ -14,6 +14,7 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 | `vscode/keybindings.json` | `~/Library/Application Support/Code/User/keybindings.json` | Custom keybindings |
 | `vscode/extensions.txt` | _(none — regenerated via `code --list-extensions`)_ | Installed extension list |
 | `herdr/plugins.txt` | _(none — regenerated via `herdr plugin list`)_ | Installed Herdr plugin list |
+| `herdr/config.toml` | `~/.config/herdr/config.toml` | Herdr config (keybindings, UI) |
 | `firefox/` | _(none — sync via `firefox/sync.sh`)_ | Firefox profile configs (prefs, chrome CSS, extensions, bookmarks) |
 
 ## Docs

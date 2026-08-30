@@ -1,0 +1,61 @@
+onboarding = false
+
+[ui.sound]
+enabled = false
+
+[ui.toast]
+delivery = "system"
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+# Smart Rename plugin bindings
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "tab-smart-rename.rename-now"
+description = "smart rename current tab"
+
+[[keys.command]]
+key = "prefix+alt+t"
+type = "plugin_action"
+command = "tab-smart-rename.rename-all"
+description = "force smart rename all tabs"
+
+# reviewr: toggle diff-review pane
+[[keys.command]]
+key = "cmd+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "toggle reviewr pane"
+
+# Annotate (plannotator/herdr-annotate)
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate text"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations as context"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents in this folder"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "annotate.last"
+description = "review the agent's last reply"
