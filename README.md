@@ -20,6 +20,7 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 
 - `AGENTS.md` — Project-specific instructions for LLM coding agents working in this repo
 - `docs/tmux.md` — Beginner's guide tuned to this exact tmux config
+- `docs/herdr.md` — Herdr keybindings guide (built-ins + plugin bindings)
 - `docs/tmux_proposal.md` — Reference proposal for pi-subagents tmux integration
 
 ## Auto-commit
