@@ -7,6 +7,9 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 | File | Symlink target | Purpose |
 |------|---------------|---------|
 | `.zshrc` | `~/.zshrc` | Zsh config (oh-my-zsh, aliases, fzf, starship, tools) |
+| `.zprofile` | `~/.zprofile` | Login shell: brew shellenv, PATH entries |
+| `.zshenv` | `~/.zshenv` | Every zsh invocation: cargo env |
+| `Brewfile` | _(none — install via `brew bundle install`)_ | Homebrew formulas, casks, and taps |
 | `.tmux.conf` | `~/.tmux.conf` | Tmux config (Ghostty-optimized, pi-subagents, 8 plugins) |
 | `starship.toml` | `~/.config/starship.toml` | Prompt theme |
 | `ghostty/config` | `~/.config/ghostty/config` | Terminal emulator (TokyoNight theme) |
@@ -38,13 +41,19 @@ This also keeps `vscode/extensions.txt` up to date automatically.
 ## Setup on a new machine
 
 ```sh
-git clone git@github.com:eliasdiab/configs.git ~/dev/configs
+git clone git@github.com:ediab/configs.git ~/dev/configs
 ln -s ~/dev/configs/.zshrc ~/.zshrc
+ln -s ~/dev/configs/.zprofile ~/.zprofile
+ln -s ~/dev/configs/.zshenv ~/.zshenv
 ln -s ~/dev/configs/.tmux.conf ~/.tmux.conf
 ln -s ~/dev/configs/starship.toml ~/.config/starship.toml
 ln -s ~/dev/configs/ghostty/config ~/.config/ghostty/config
+ln -s ~/dev/configs/herdr/config.toml ~/.config/herdr/config.toml
 ln -s ~/dev/configs/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 ln -s ~/dev/configs/vscode/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+
+# Homebrew packages (run after installing Homebrew)
+brew bundle --file=~/dev/configs/Brewfile
 
 # Auto-commit agent
 cp ~/dev/configs/launchd/com.diab.autocommit-configs.plist ~/Library/LaunchAgents/
