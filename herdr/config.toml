@@ -1,5 +1,8 @@
 onboarding = false
 
+[theme]
+name = "terminal"  # follow host terminal's ANSI palette (TokyoNight)
+
 [ui.sound]
 enabled = false
 
@@ -49,7 +52,7 @@ command = "annotate.manage"
 description = "manage annotations"
 
 [[keys.command]]
-key = "prefix+o"
+key = "prefix+d"
 type = "plugin_action"
 command = "annotate.open"
 description = "review documents in this folder"

@@ -14,12 +14,12 @@ theme = TokyoNight
 
 # --- Window and Appearance ---
 window-decoration = auto
-background-opacity = 1
 window-padding-x = 14
 window-padding-y = 12
+window-padding-balance = true
 window-save-state = always
-window-theme = auto
 window-inherit-working-directory = true
+macos-option-as-alt = true
 
 # --- Cursor ---
 cursor-style = block
@@ -42,7 +42,6 @@ clipboard-paste-bracketed-safe = true
 
 # --- Behavior ---
 confirm-close-surface = false
-shell-integration = detect
 
 # --- Keybindings ---
 # Tabs

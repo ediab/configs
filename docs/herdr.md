@@ -64,7 +64,8 @@ Press **`ctrl+b`** (prefix) first, then the key. All bindings below are active i
 | Select text, then `prefix+a` | Annotate the selection (`ctrl+s` saves) |
 | `prefix+shift+a` | Copy all annotations as Markdown |
 | `prefix+m` | Manage: `y` copy · `c` copy all · `Shift+C` copy+archive · `d d` delete |
-| `prefix+o` | Review documents in the focused pane's folder |
+| `prefix+o` | Focus notification target |
+| `prefix+d` | Review documents in the focused pane's folder |
 | `prefix+shift+o` | Review the agent's last reply, send feedback (`e`) |
 | Ctrl-click a `file://….md` link | Open that file in the annotator |
 
