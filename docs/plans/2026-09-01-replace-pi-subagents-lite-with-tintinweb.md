@@ -51,4 +51,4 @@ One `pi uninstall` + `pi install`, write a small `~/.pi/agent/subagents.json` fo
 
 ## Open Questions
 
-- None blocking. Deferred by choice: per-agent `skills: false` / `extensions: false` scoping (lite had implicit loading off; tintinweb's default differs, but scoping each agent file is a behavior change best done later per-agent if needed). Deferred: `workflowsEnabled` pin (auto-standdown handles conflicts).
+- None blocking. Deferred by choice: `workflowsEnabled` pin (auto-standdown handles conflicts with other workflow tools).
