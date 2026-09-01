@@ -25,13 +25,6 @@ type = "plugin_action"
 command = "tab-smart-rename.rename-all"
 description = "force smart rename all tabs"
 
-# reviewr: toggle diff-review pane
-[[keys.command]]
-key = "cmd+r"
-type = "plugin_action"
-command = "persiyanov.reviewr.toggle"
-description = "toggle reviewr pane"
-
 # Annotate (plannotator/herdr-annotate)
 [[keys.command]]
 key = "prefix+a"
