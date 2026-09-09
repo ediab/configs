@@ -76,4 +76,12 @@ Press **`ctrl+b`** (prefix) first, then the key. All bindings below are active i
 | `prefix+t` | Smart-rename current tab |
 | `prefix+alt+t` | Smart-rename all tabs |
 
-> Installed plugins: `annotate`, `tab-smart-rename` — tracked in `herdr/plugins.txt` (regenerate with `herdr plugin list`).
+## Oh My Zsh (robbyrussell/herdr-ohmyzsh)
+
+| Keys | Action |
+|------|--------|
+| `prefix+shift+r` | Reload Oh My Zsh in every idle pane (`hreload`) |
+
+Shell helpers (inside a Herdr pane): `hsplit [right|down] [cmd]`, `htab [label]`, `hagent NAME [KIND]`, `hworktree BRANCH [BASE]`, `hreload`. Slow commands (>10s) show in the sidebar and toast on finish.
+
+> Installed plugins: `annotate`, `tab-smart-rename`, `ohmyzsh.shell` — tracked in `herdr/plugins.txt` (regenerate with `herdr plugin list`).

@@ -30,6 +30,7 @@ ZSH_THEME=""
 # fight over the same command name.
 plugins=(
   git
+  herdr
   web-search
   copypath
 )

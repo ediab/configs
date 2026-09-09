@@ -55,3 +55,10 @@ key = "prefix+shift+o"
 type = "plugin_action"
 command = "annotate.last"
 description = "review the agent's last reply"
+
+# Oh My Zsh (robbyrussell/herdr-ohmyzsh)
+[[keys.command]]
+key = "prefix+shift+r"
+type = "plugin_action"
+command = "ohmyzsh.shell.reload-all"
+description = "reload Oh My Zsh in idle panes"
