@@ -148,8 +148,8 @@ mas "Numbers", id: 409203825
 mas "Obsidian Web Clipper", id: 6720708363
 mas "Pages", id: 409201541
 mas "Yubico Authenticator", id: 1497506650
+vscode "catppuccin.catppuccin-vsc"
 vscode "charliermarsh.ruff"
-vscode "enkia.tokyo-night"
 vscode "kevinrose.vsc-python-indent"
 vscode "miguelsolorio.symbols"
 vscode "ms-python.debugpy"

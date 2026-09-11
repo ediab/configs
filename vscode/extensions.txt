@@ -1,5 +1,5 @@
+catppuccin.catppuccin-vsc
 charliermarsh.ruff
-enkia.tokyo-night
 kevinrose.vsc-python-indent
 miguelsolorio.symbols
 ms-python.debugpy

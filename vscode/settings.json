@@ -3,7 +3,7 @@
   // --- UI: minimal chrome, Zed-style ---
   // ==========================================
   "workbench.iconTheme": "symbols",
-  "workbench.colorTheme": "Tokyo Night Storm",
+  "workbench.colorTheme": "Catppuccin Mocha",
   "window.titleBarStyle": "native",
   "window.commandCenter": false, // one less bar of chrome up top
   "workbench.panel.showLabels": false,
@@ -41,7 +41,7 @@
     "editorGroupHeader.tabsBorder": "#00000000",
     "editorGroup.border": "#00000000",
     "panel.border": "#00000000",
-    "editorRuler.foreground": "#2c3142" // dim the 88/100 rulers (Tokyo Night Storm) so they're a quiet guide, not bright red
+    "editorRuler.foreground": "#313244" // dim the 88/100 rulers (Catppuccin Mocha surface0) so they're a quiet guide, not bright red
   },
   // ==========================================
   // --- Typography: Maple Mono ---
