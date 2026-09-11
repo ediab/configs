@@ -10,6 +10,24 @@
 # Tip: Looking for a nice color? Here's a one-liner to print colormap.
 #
 #   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+#
+# ---------------------------------------------------------------------------
+# CATPPUCCIN MOCHA PALETTE (hand-edited on top of the wizard output).
+# p10k's `_p10k_translate_color` passes '#rrggbb' straight through to zsh's %F{},
+# and the VPS runs zsh 5.9, so these render as exact 24-bit colour. Keep these in
+# sync with ~/dev/configs/starship.toml (same palette name + hexes) and with
+# Ghostty's "Catppuccin Mocha" theme.
+#
+# Only the segments actually rendered below are converted -- the active prompt is
+# dir + vcs + prompt_char (rulers and right prompt are off). The remaining ~110
+# POWERLEVEL9K_*_FOREGROUND values are still 256-colour indices from the wizard;
+# convert them the same way if you ever enable those segments.
+#
+# NOTE: `p10k configure` regenerates this file and will discard these edits.
+#
+#   blue #89b4fa   sapphire #74c7ec   overlay0 #6c7086
+#   green #a6e3a1  yellow #f9e2af     red #f38ba8
+# ---------------------------------------------------------------------------
 
 # Temporarily change options.
 'builtin' 'local' '-a' 'p10k_config_opts'
@@ -121,9 +139,9 @@
 
   ################################[ prompt_char: prompt symbol ]################################
   # Green prompt symbol if the last command succeeded.
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=76
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND='#a6e3a1'
   # Red prompt symbol if the last command failed.
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=196
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND='#f38ba8'
   # Default prompt symbol.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION='>'
   # Prompt symbol in command vi mode.
@@ -140,17 +158,17 @@
 
   ##################################[ dir: current directory ]##################################
   # Default current directory color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=31
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND='#89b4fa'
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=103
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND='#6c7086'
   # Color of the anchor directory segments. Anchor segments are never shortened. The first
   # segment is always an anchor.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=39
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND='#74c7ec'
   # Display anchor directory segments in bold.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   # Don't shorten directories that contain any of these files. They are anchors.
@@ -432,9 +450,9 @@
 
   # These settings are used for repositories other than Git or when gitstatusd fails and
   # Powerlevel10k has to fall back to using vcs_info.
-  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND=76
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=76
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=178
+  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND='#a6e3a1'
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='#a6e3a1'
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='#f9e2af'
 
   ##########################[ status: exit code of the last command ]###########################
   # Enable OK_PIPE, ERROR_PIPE and ERROR_SIGNAL status states to allow us to enable, disable and
