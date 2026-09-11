@@ -62,3 +62,12 @@ Logs: `/tmp/autocommit-configs.{out,err}`.
 ssh vps   # alias defined in ~/.ssh/config
 ```
 Host: `77.42.90.4`, user: `diab`, key: `~/.ssh/id_rsa_nroot`.
+
+These are pushed to the VPS by script (not symlinked — nothing on the VPS reads this repo):
+
+| This repo | Deploy script | Live location on the VPS |
+|-----------|---------------|--------------------------|
+| `herdr/config.vps.toml` | `herdr/deploy-vps.sh` | `~/.config/herdr/config.toml` |
+| `vps/.zshrc`, `vps/.zshenv`, `vps/.p10k.zsh`, `vps/.tmux.conf` | `vps/deploy-vps.sh` | `~/` |
+
+The `vps/` files are captured byte-for-byte from the box, so `diff` against the VPS shows drift. Run the deploy with no local edits to re-align it.
