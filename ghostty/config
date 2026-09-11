@@ -10,7 +10,7 @@ font-size = 13
 font-thicken = true
 
 # --- Theme and Colors ---
-theme = TokyoNight
+theme = "Catppuccin Mocha"
 
 # --- Window and Appearance ---
 window-decoration = auto

@@ -15,7 +15,7 @@ onboarding = false
 
 # ============================================================ theme
 [theme]
-name = "vesper"  # matches the Mac so ssh-attached sessions look the same
+name = "catppuccin"  # Catppuccin Mocha; matches the Mac so ssh-attached sessions look the same
 auto_switch = false
 
 # =============================================================== ui

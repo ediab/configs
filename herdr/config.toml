@@ -2,10 +2,10 @@ onboarding = false
 
 # ============================================================ theme
 [theme]
-name = "vesper"
+name = "catppuccin"   # Catppuccin Mocha — herdr names the dark flavor just "catppuccin"
 # auto_switch is off because the theme is picked by hand (Settings wrote the explicit
 # false). To follow Ghostty's light/dark appearance instead, enable it in Settings and
-# give it explicit dark_name/light_name — vesper is dark-only.
+# give it explicit dark_name/light_name — "catppuccin" / "catppuccin-latte".
 
 # =============================================================== ui
 auto_switch = false
