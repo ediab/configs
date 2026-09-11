@@ -64,7 +64,11 @@ setopt HIST_FCNTL_LOCK         # safer concurrent writes
 # ==============================================
 
 export LANG=en_US.UTF-8
-export BROWSER="open -a Safari"
+# CHANGED: BROWSER is executed as a command with the URL appended, so it must be
+# an executable — not an app name. macOS `open` uses the default browser
+# (Firefox). "open -a Safari" broke that (pi's MCP OAuth ran
+# `open -a "open -a Safari" url` and failed).
+export BROWSER="/usr/bin/open"
 
 # CHANGED: --wait is required, otherwise `git commit` opens VS Code, returns
 # instantly with an empty message, and aborts the commit.
