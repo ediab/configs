@@ -21,6 +21,7 @@ name = "terminal"  # follow the host terminal's ANSI palette (Ghostty = TokyoNig
 #   selection alive and copy with Cmd+C instead.
 mouse_capture = true
 copy_on_select = true
+mouse_scroll_lines = 5          # one wheel notch scrolls 5 lines (default 3)
 
 # --- sidebar + agent panel --------------------------------------------------
 sidebar_width = 30          # default 26 auto-scales to workspace names
@@ -43,9 +44,11 @@ tab_bar_right_separator = " · "
 # see when attached with `herdr --remote`.
 
 # --- pane presentation ------------------------------------------------------
-pane_borders = true             # frame split panes only (0.9.0+: "auto"/"always"/"off")
-pane_outer_borders = true
-pane_gaps = true                # separated panes instead of shared dividers
+# pane_borders stays at its default ("auto"): borders between split panes only,
+# never around a lone pane. 0.9.0+ spelling, if you ever want it explicit:
+#   pane_borders = "auto"
+pane_outer_borders = false      # no frame around the pane area — tmux-style open edges
+pane_gaps = false               # panes share one divider instead of gapped frames
 pane_scrollbars = true
 show_agent_labels_on_pane_borders = true
 confirm_close = true
