@@ -15,7 +15,8 @@ onboarding = false
 
 # ============================================================ theme
 [theme]
-name = "terminal"  # follow the host terminal's ANSI palette
+name = "vesper"  # matches the Mac so ssh-attached sessions look the same
+auto_switch = false
 
 # =============================================================== ui
 [ui]

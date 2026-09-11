@@ -3,12 +3,9 @@ onboarding = false
 # ============================================================ theme
 [theme]
 name = "vesper"
-# auto_switch stays off on purpose: Ghostty is pinned to a single theme, so letting
-# Herdr switch its own theme would drift from the host palette. If Ghostty ever
-# moves to `theme = light:...,dark:...`, set:
-#   auto_switch = true
-#   light_name = "catppuccin-latte"   # or tokyo-night-day
-#   dark_name  = "tokyo-night"
+# auto_switch is off because the theme is picked by hand (Settings wrote the explicit
+# false). To follow Ghostty's light/dark appearance instead, enable it in Settings and
+# give it explicit dark_name/light_name — vesper is dark-only.
 
 # =============================================================== ui
 auto_switch = false
