@@ -1,16 +1,73 @@
 onboarding = false
 
+# ============================================================ theme
 [theme]
-name = "terminal"  # follow host terminal's ANSI palette (TokyoNight)
+name = "terminal"  # follow the host terminal's ANSI palette (Ghostty = TokyoNight)
+# auto_switch stays off on purpose: Ghostty is pinned to a single theme, so letting
+# Herdr switch its own theme would drift from the host palette. If Ghostty ever
+# moves to `theme = light:...,dark:...`, set:
+#   auto_switch = true
+#   light_name = "catppuccin-latte"   # or tokyo-night-day
+#   dark_name  = "tokyo-night"
 
+# =============================================================== ui
+[ui]
+# --- mouse + clipboard ------------------------------------------------------
+# mouse_capture = true keeps Herdr's mouse-first UI (click panes/tabs, drag split
+#   borders, right-click menus). Set it to false to hand plain clicks back to
+#   Ghostty — Cmd-click URLs, native drag-select — at the cost of Herdr's mouse UI.
+# copy_on_select = true mirrors Ghostty's `copy-on-select = true`: Herdr copies on
+#   release and confirms with a bottom-center toast. Set false to keep the
+#   selection alive and copy with Cmd+C instead.
+mouse_capture = true
+copy_on_select = true
+
+# --- sidebar + agent panel --------------------------------------------------
+sidebar_width = 30          # default 26 auto-scales to workspace names
+sidebar_min_width = 20
+sidebar_max_width = 40
+sidebar_start_collapsed = false
+sidebar_collapsed_mode = "compact"
+agent_panel_sort = "priority"   # blocked/done agents float to the top ("spaces" to group by project)
+status_indicators = "symbols"   # distinguishable by shape, not by color alone
+
+# --- tab bar ----------------------------------------------------------------
+tab_bar_position = "top"
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "datetime", format = "%H:%M" },
+]
+tab_bar_right_separator = " · "
+# window_title keeps its default "{hostname}: {workspace}" — the title renders on
+# the server, so it names the machine the panes run on, which is what you want to
+# see when attached with `herdr --remote`.
+
+# --- pane presentation ------------------------------------------------------
+pane_borders = true             # frame split panes only (0.9.0+: "auto"/"always"/"off")
+pane_outer_borders = true
+pane_gaps = true                # separated panes instead of shared dividers
+pane_scrollbars = true
+show_agent_labels_on_pane_borders = true
+confirm_close = true
+prompt_new_tab_name = false     # tab-smart-rename names tabs; no prompt on prefix+c
+
+# ===================================================== notifications
 [ui.sound]
 enabled = false
 
 [ui.toast]
-delivery = "system"
+delivery = "system"   # terminal-notifier is installed, so clicks focus Ghostty
+delay_seconds = 2     # skip notifications for work that finishes almost instantly
 
-[ui]
-show_agent_labels_on_pane_borders = true
+[ui.toast.clipboard]
+enabled = true
+position = "bottom-center"
+
+# ======================================================= keybindings
+[keys]
+# prefix+shift+r is both the built-in reload-config default and the ohmyzsh plugin
+# binding below, so reload-config moves off it and both stay reachable.
+reload_config = "prefix+shift+c"
 
 # Smart Rename plugin bindings
 [[keys.command]]

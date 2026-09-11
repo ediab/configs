@@ -142,6 +142,7 @@ fi
 alias zshconfig="$EDITOR ~/.zshrc"
 alias gconfig="$EDITOR ~/.config/ghostty/config"
 alias sconfig="$EDITOR ~/.config/starship.toml"
+alias hconfig="$EDITOR ~/.config/herdr/config.toml"
 alias reload="exec zsh"        # exec beats re-sourcing: no duplicated state
 alias c="clear"
 
@@ -178,6 +179,15 @@ alias lg='lazygit'
 # NOTE the single quotes on glm: they defer variable expansion until the alias
 # is *run*, so it still works if ~/.zshrc.secrets loads later or changes.
 alias glm='ANTHROPIC_MODEL=GLM-4.7 ANTHROPIC_BASE_URL=$ZAI_BASE_URL ANTHROPIC_AUTH_TOKEN=$ZAI_API_KEY claude --dangerously-skip-permissions'
+
+# --- herdr / remote ---
+# Thin local client attached to the VPS Herdr server: panes and agents keep
+# running there, the UI (theme, sidebar, keybindings) is drawn locally, and
+# image paste is bridged from the local clipboard.
+# Run it from a plain Ghostty surface — launching herdr inside a Herdr pane is
+# blocked by default. To allow that, set experimental.allow_nested = true in
+# ~/.config/herdr/config.toml.
+alias hvps='herdr --remote vps'
 alias claude="claude --dangerously-skip-permissions --model opusplan"
 alias codex="codex --dangerously-bypass-approvals-and-sandbox"
 alias gemini="NODE_NO_WARNINGS=1 gemini"
