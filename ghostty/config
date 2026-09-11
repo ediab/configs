@@ -31,7 +31,7 @@ resize-overlay = never
 # --- Transparency ---
 # NOTE: background-opacity needs a FULL Ghostty restart on macOS (reload_config won't apply it).
 # Opacity is also disabled automatically in macOS native fullscreen.
-background-opacity = 0.9
+background-opacity = 0.7
 background-blur = macos-glass-regular
 # Makes Neovim/tmux backgrounds respect background-opacity too (they're opaque by design otherwise).
 background-opacity-cells = true
