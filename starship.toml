@@ -4,7 +4,10 @@ add_newline = true
 command_timeout = 1000
 scan_timeout = 30
 
-# Text-only Tokyo Night — soft 2-line
+# Text-only Catppuccin Mocha — soft 2-line
+# Hexes below are the canonical Catppuccin Mocha palette (identical to Ghostty's
+# "Catppuccin Mocha" theme and Herdr's "catppuccin"). Keep them in sync — the
+# prompt sits directly on Ghostty's base #1e1e2e, so a stray other-flavor hex shows.
 # L1: [user@host ]dir branch [dirty] [venv] [duration]
 # L2: [status] [jobs] ❯
 format = """
@@ -22,15 +25,15 @@ $character"""
 
 right_format = ""
 
-palette = "tokyo_night"
+palette = "catppuccin_mocha"
 
-[palettes.tokyo_night]
-blue   = "#7aa2f7"
-purple = "#bb9af7"
-green  = "#9ece6a"
-yellow = "#e0af68"
-red    = "#f7768e"
-grey   = "#565f89"
+[palettes.catppuccin_mocha]
+blue   = "#89b4fa"   # blue
+purple = "#cba6f7"   # mauve
+green  = "#a6e3a1"   # green
+yellow = "#f9e2af"   # yellow
+red    = "#f38ba8"   # red
+grey   = "#6c7086"   # overlay0
 
 # ── Modules ───────────────────────────────────────────────────
 
