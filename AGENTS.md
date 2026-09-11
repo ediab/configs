@@ -14,6 +14,7 @@ Dotfiles and configs for shell, terminal, editor, and Firefox. This is the sourc
 | `.tmux.conf` | `~/.tmux.conf` |
 | `starship.toml` | `~/.config/starship.toml` |
 | `ghostty/config` | `~/.config/ghostty/config` |
+| `rpiv-advisor/advisor.json` | `~/.config/rpiv-advisor/advisor.json` |
 | `vscode/settings.json` | `~/Library/Application Support/Code/User/settings.json` |
 | `vscode/keybindings.json` | `~/Library/Application Support/Code/User/keybindings.json` |
 
@@ -30,6 +31,8 @@ The sync script copies: `prefs.js`, extension prefs/settings, `containers.json`,
 Sensitive files (cookies, logins, certs) and large auto-generated data (storage, favicons, extensions XPI) are never synced.
 
 ## pi-dotfiles harness (NOT in this repo)
+
+Exception: the rpiv-advisor extension's config lives at `~/.config/rpiv-advisor/advisor.json` (not `~/.pi/agent/`), so it is symlinked from this repo — see the table above.
 
 Pi agent extensions, skills, and settings live in `~/dev/pi-dotfiles/` and are deployed to `~/.pi/agent/` by `install.sh`/`update.sh`. When making pi harness changes, edit in `~/dev/pi-dotfiles/` and run `update.sh`. If `pi` itself rewrites `settings.json`, re-sync the live copy back to `~/dev/pi-dotfiles/` to avoid drift.
 

@@ -18,6 +18,7 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 | `vscode/extensions.txt` | _(none — regenerated via `code --list-extensions`)_ | Installed extension list |
 | `herdr/plugins.txt` | _(none — regenerated via `herdr plugin list`)_ | Installed Herdr plugin list |
 | `herdr/config.toml` | `~/.config/herdr/config.toml` | Herdr config (keybindings, UI) |
+| `rpiv-advisor/advisor.json` | `~/.config/rpiv-advisor/advisor.json` | Pi advisor extension: reviewer model, effort, model blocklist, guidance |
 | `herdr/config.vps.toml` | _(none — deploy via `herdr/deploy-vps.sh`)_ | Herdr config for the VPS (`ssh vps`), headless toast delivery |
 | `vps/` | _(none — deploy via `vps/deploy-vps.sh`)_ | VPS shell dotfiles (`.zshrc`, `.zshenv`, `.p10k.zsh`, `.tmux.conf`) for `ssh vps` |
 | `firefox/` | _(none — sync via `firefox/sync.sh`)_ | Firefox profile configs (prefs, chrome CSS, extensions, bookmarks) |
@@ -51,6 +52,8 @@ ln -s ~/dev/configs/.tmux.conf ~/.tmux.conf
 ln -s ~/dev/configs/starship.toml ~/.config/starship.toml
 ln -s ~/dev/configs/ghostty/config ~/.config/ghostty/config
 ln -s ~/dev/configs/herdr/config.toml ~/.config/herdr/config.toml
+mkdir -p ~/.config/rpiv-advisor
+ln -s ~/dev/configs/rpiv-advisor/advisor.json ~/.config/rpiv-advisor/advisor.json
 ln -s ~/dev/configs/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 ln -s ~/dev/configs/vscode/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 
