@@ -147,6 +147,7 @@ alias zshconfig="$EDITOR ~/.zshrc"
 alias gconfig="$EDITOR ~/.config/ghostty/config"
 alias sconfig="$EDITOR ~/.config/starship.toml"
 alias hconfig="$EDITOR ~/.config/herdr/config.toml"
+alias cheat='open -a markemark ~/Desktop/cheatsheet.md'
 alias reload="exec zsh"        # exec beats re-sourcing: no duplicated state
 alias c="clear"
 
