@@ -127,3 +127,7 @@ key = "cmd+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "toggle reviewr pane"
+
+[experimental]
+# Allow launching herdr (e.g. herdr --remote vps) from inside a herdr-managed pane.
+allow_nested = true
