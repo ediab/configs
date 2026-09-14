@@ -18,8 +18,10 @@
 # Safety, in order:
 #   1. the whole run takes the SAME flock as ~/bin/vps-deploy.sh, so an image refresh can
 #      never interleave with a push-to-deploy of the same project;
-#   2. the app's data is snapshotted first (3 generations kept) — restoring an image does
-#      not undo a database migration, so the snapshot is the real safety net;
+#   2. the project is STOPPED first and its data snapshotted (3 generations kept), then the
+#      snapshot is verified with `tar -tzf` — restoring an image does not undo a database
+#      migration, and a torn tar of a live SQLite file is not a way back at all. If the
+#      snapshot is missing or unreadable the project is restarted and left untouched;
 #   3. the current image IDs are recorded; if the project is not healthy afterwards, those
 #      IDs are re-tagged and the project recreated from them.
 
@@ -32,6 +34,7 @@ SNAP_ROOT="$HOME/backups"
 LOCK_FILE="$HOME/.cache/vps-deploy.lock"   # shared with ~/bin/vps-deploy.sh
 HEALTH_TIMEOUT="${HEALTH_TIMEOUT:-150}"
 PROJECTS=(note-sx karakeep-app)
+SNAPSHOT_TARGET=""
 
 DRY_RUN=0
 LOCKED=0
@@ -44,7 +47,11 @@ for arg in "$@"; do
 done
 
 mkdir -p "$LOG_DIR" "$SNAP_ROOT" "$(dirname "$LOCK_FILE")"
-exec > >(tee -a "$LOG") 2>&1
+# Only the outermost process tees: the flock re-exec inherits this stdout, so teeing in
+# both would interleave two writers into one log file.
+if [ "$LOCKED" -eq 0 ]; then
+  exec > >(tee -a "$LOG") 2>&1
+fi
 echo "=== vps-update-images $(date -Is) dry_run=$DRY_RUN locked=$LOCKED ==="
 
 run() {
@@ -55,7 +62,18 @@ run() {
   fi
 }
 
-# Keep the 3 newest snapshots for an app, drop the rest.
+compose_file_for() {
+  local dir="$1" candidate
+  for candidate in docker-compose.yml docker-compose.yaml compose.yaml compose.yml; do
+    if [ -f "$dir/$candidate" ]; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Keep the 3 newest snapshots for an app, drop the rest (the new one is newest by mtime).
 rotate_snapshots() {
   local app_dir="$1"
   ls -1t "$app_dir"/*.tgz 2>/dev/null | tail -n +4 | while read -r old; do
@@ -64,10 +82,12 @@ rotate_snapshots() {
   done
 }
 
-# Snapshot an app's data. Karakeep keeps everything in a Docker volume (root-only, hence
-# sudo); note-sx keeps db/ and userfiles/ inside its checkout.
+# Snapshot an app's data with its containers stopped. Karakeep keeps everything in a Docker
+# volume (root-only, hence sudo); note-sx keeps db/ and userfiles/ inside its checkout.
+# Sets SNAPSHOT_TARGET on success; a failed or partial tar is deleted, never left behind as
+# something the next run could mistake for a usable backup.
 snapshot_data() {
-  local project="$1" stamp target
+  local project="$1" stamp target rc=0
   stamp="$(date +%Y%m%d-%H%M%S)"
   mkdir -p "$SNAP_ROOT/$project"
 
@@ -75,17 +95,36 @@ snapshot_data() {
     karakeep-app)
       target="$SNAP_ROOT/$project/data-$stamp.tgz"
       echo "  snapshot: karakeep-app_data -> $(basename "$target")"
-      run sudo -n tar -czf "$target" -C /var/lib/docker/volumes/karakeep-app_data/_data . \
-        || echo "  warning: karakeep snapshot failed"
+      if [ "$DRY_RUN" -eq 1 ]; then
+        echo "  [dry-run] sudo -n tar -czf $target -C /var/lib/docker/volumes/karakeep-app_data/_data ."
+      else
+        sudo -n tar -czf "$target" -C /var/lib/docker/volumes/karakeep-app_data/_data . || rc=1
+      fi
       ;;
     note-sx)
       target="$SNAP_ROOT/$project/state-$stamp.tgz"
       echo "  snapshot: db/ + userfiles/ -> $(basename "$target")"
-      run tar -czf "$target" -C "$APPS_DIR/$project" db userfiles \
-        || echo "  warning: note-sx snapshot failed"
+      if [ "$DRY_RUN" -eq 1 ]; then
+        echo "  [dry-run] tar -czf $target -C $APPS_DIR/$project db userfiles"
+      else
+        tar -czf "$target" -C "$APPS_DIR/$project" db userfiles || rc=1
+      fi
+      ;;
+    *)
+      echo "  no snapshot rule for '$project' — refusing to refresh it" >&2
+      return 1
       ;;
   esac
+
+  if [ "$rc" -ne 0 ]; then
+    echo "  warning: snapshot failed" >&2
+    [ "$DRY_RUN" -eq 0 ] && rm -f "$target"
+    return 1
+  fi
+
+  SNAPSHOT_TARGET="$target"
   rotate_snapshots "$SNAP_ROOT/$project"
+  return 0
 }
 
 record_image_ids() {
@@ -130,8 +169,8 @@ refresh_project() {
   ids_file="$(mktemp)"
 
   echo "--- $project ($dir) ---"
-  if [ ! -f "$dir/docker-compose.yml" ]; then
-    echo "  no docker-compose.yml — skipping"
+  if ! compose_file_for "$dir" >/dev/null; then
+    echo "  no compose file — skipping"
     rm -f "$ids_file"
     return 0
   fi
@@ -139,11 +178,22 @@ refresh_project() {
   record_image_ids "$dir" "$ids_file"
   echo "  recorded image IDs:"; sed 's/^/    /' "$ids_file"
 
-  snapshot_data "$project"
-  if [ "$DRY_RUN" -eq 0 ] && ! ls "$SNAP_ROOT/$project"/*.tgz >/dev/null 2>&1; then
-    echo "  no snapshot present — refusing to pull without a way back"
-    rm -f "$ids_file"
-    return 1
+  # Quiesce before snapshotting. Containers come back below (or immediately, if the
+  # snapshot turns out unusable).
+  echo "  stopping containers for a consistent snapshot"
+  run docker compose --project-directory "$dir" stop
+
+  SNAPSHOT_TARGET=""
+  snapshot_data "$project" || true
+
+  if [ "$DRY_RUN" -eq 0 ]; then
+    if [ -z "$SNAPSHOT_TARGET" ] || [ ! -s "$SNAPSHOT_TARGET" ] || ! tar -tzf "$SNAPSHOT_TARGET" >/dev/null 2>&1; then
+      echo "  snapshot missing or unreadable — restarting and refusing to pull" >&2
+      docker compose --project-directory "$dir" up -d
+      rm -f "$ids_file"
+      return 1
+    fi
+    echo "  snapshot verified: $(basename "$SNAPSHOT_TARGET") ($(du -h "$SNAPSHOT_TARGET" | cut -f1))"
   fi
 
   if [ "$DRY_RUN" -eq 1 ]; then
@@ -156,6 +206,7 @@ refresh_project() {
     [ "$pull_status" -ne 0 ] && echo "  warning: pull exited $pull_status — continuing with local images" >&2
   fi
   run docker compose --project-directory "$dir" up -d
+
   if [ "$DRY_RUN" -eq 1 ]; then
     rm -f "$ids_file"
     return 0

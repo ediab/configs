@@ -1,12 +1,24 @@
-// VPS update policy — the delta on top of 50unattended-upgrades.
+// VPS update policy — the complete policy for this box.
 //
-// 50unattended-upgrades (versioned next to this file) carries the allowed origins:
-// the base pocket plus security and ESM, so general updates install unattended.
-// This file adds only the VPS-specific behaviour.
+// `50unattended-upgrades` in this directory belongs to the package: it is shipped from
+// /usr/share/unattended-upgrades/ (with an md5sum alongside it) and is deliberately NOT
+// managed by the configs repo. Copying it into the repo re-pinned a stale snapshot of a
+// package file, and hand-editing it is what produced the stray `.bak-*` that made apt warn
+// about an invalid filename extension.
+//
+// apt merges the Allowed-Origins lists from every file in this directory, so the origins
+// are stated here as well: if the package's own file is ever narrowed or replaced by an
+// upgrade, general updates still install unattended.
 //
 // Deployed by vps/deploy-vps.sh (sudo install) from the configs repo — edit it there,
-// never on the VPS, or the next deploy overwrites you.
-// `~/apps/AGENTS.md` documents this as "50unattended-upgrades plus 51-vps-auto-updates".
+// never on the VPS. `~/apps/AGENTS.md` documents the resulting behaviour.
+
+Unattended-Upgrade::Allowed-Origins {
+        "${distro_id}:${distro_codename}";
+        "${distro_id}:${distro_codename}-security";
+        "${distro_id}ESMApps:${distro_codename}-apps-security";
+        "${distro_id}ESM:${distro_codename}-infra-security";
+};
 
 Unattended-Upgrade::Automatic-Reboot "true";
 

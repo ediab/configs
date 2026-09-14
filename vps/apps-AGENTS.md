@@ -20,13 +20,14 @@ This file is versioned in the configs repo (`vps/apps-AGENTS.md`) and deployed b
 
 ## OS auto-updates
 
-- `unattended-upgrades` installs updates from the base, security and ESM pockets with an automatic reboot at 03:30 (`/etc/apt/apt.conf.d/50unattended-upgrades` plus `51-vps-auto-updates`).
-- Both files are versioned in the configs repo and installed by `vps/deploy-vps.sh`; edit them there. `50-` carries the allowed origins, `51-` adds the reboot window, `Automatic-Reboot-WithUsers "true"` and kernel cleanup.
+- `unattended-upgrades` installs updates from the base, security and ESM pockets with an automatic reboot at 03:30. The policy is `/etc/apt/apt.conf.d/51-vps-auto-updates`, versioned in the configs repo and installed by `vps/deploy-vps.sh` — edit it there.
+- `50unattended-upgrades` is the package's own file (shipped from `/usr/share/unattended-upgrades/`) and is not managed here. apt merges the origins from both files, so general updates still install if that one is ever replaced by an upgrade. Do not hand-edit it: that is what left a stray `.bak-*` file behind and made apt warn about an invalid filename extension.
+- Kernels left over from reboots are reaped by `Remove-Unused-Kernel-Packages` during unattended runs; the weekly cleanup only runs `autoremove`.
 - A reboot is cut short of an in-flight deploy by the `vps-deploy-inhibit` shutdown inhibit.
 
 ## Weekly upkeep (com.diab.sync-vps deploys these; timers are user units)
 
-- `~/bin/vps-cleanup.sh` — Sunday 04:30: trims the Docker build cache to a 3 GB ceiling, removes images no container uses except the protected build bases (the Playwright image greek_embassy_bot builds from), clears runner/npm/apt caches and old kernels, caps the journal. `--dry-run` prints without changing anything. Log: `~/logs/vps-cleanup.log`.
-- `~/bin/vps-update-images.sh` — Sunday 05:30: pulls and recreates only the third-party-image projects (note-sx, karakeep-app), taking the same `~/.cache/vps-deploy.lock` as `vps-deploy.sh`, snapshotting their data into `~/backups/<app>/` (3 generations) and rolling the image tags back if a project is unhealthy afterwards. Log: `~/logs/vps-update-images.log`.
+- `~/bin/vps-cleanup.sh` — Sunday 04:30: caps the Docker build cache at 3 GB (`--max-used-space`; the older `--keep-storage` is a *floor*, not a cap), removes images no container uses except the protected build bases (the Playwright image greek_embassy_bot builds from), clears runner/npm/apt caches and runs `apt-get autoremove`. It takes the same `~/.cache/vps-deploy.lock` as `vps-deploy.sh` so pruning cannot race a build, is `--dry-run`-able, is idempotent, and exits non-zero if a step failed. The journal cap is soft — active journal files are exempt. Log: `~/logs/vps-cleanup.log`.
+- `~/bin/vps-update-images.sh` — Sunday 05:30: stops each third-party-image project (note-sx, karakeep-app), snapshots its data into `~/backups/<app>/` (3 generations), verifies the archive with `tar -tzf` and refuses to pull if it is unusable, then pulls, recreates, health-checks, and re-tags the recorded image IDs if the project ends up unhealthy. Takes the same lock as `vps-deploy.sh`. Log: `~/logs/vps-update-images.log`.
 - `herdr-server.service` — keeps the headless Herdr server running across reboots.
 - Locally built images and the `deploy.sh`-managed nginx step are never touched by the weekly jobs; they belong to the push path.

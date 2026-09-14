@@ -75,7 +75,7 @@ These are pushed to the VPS by script (not symlinked — nothing on the VPS read
 | `vps/.zshrc`, `vps/.zshenv`, `vps/.p10k.zsh`, `vps/.tmux.conf` | `vps/deploy-vps.sh` | `~/` |
 | `vps/vps-cleanup.sh`, `vps/vps-update-images.sh` | `vps/deploy-vps.sh` | `~/bin/` (run by user timers) |
 | `vps/systemd/*.service`, `vps/systemd/*.timer` | `vps/deploy-vps.sh` | `~/.config/systemd/user/` |
-| `vps/apt/50unattended-upgrades`, `vps/apt/51-vps-auto-updates` | `vps/deploy-vps.sh` | `/etc/apt/apt.conf.d/` (sudo) |
+| `vps/apt/51-vps-auto-updates` | `vps/deploy-vps.sh` | `/etc/apt/apt.conf.d/` (sudo) |
 | `vps/apps-AGENTS.md` | `vps/deploy-vps.sh` | `~/apps/AGENTS.md` |
 | `nvim/` | `nvim/deploy-vps.sh` | `~/.config/nvim` |
 
@@ -92,10 +92,10 @@ rather than hand-made on the server:
 
 | What | When | Notes |
 |------|------|-------|
-| `vps-cleanup.sh` | Sun 04:30 | Trims the Docker build cache to a 3 GB ceiling, removes images no container uses **except** the protected build bases (the Playwright image `greek_embassy_bot` builds from), clears runner/npm/apt caches, caps the journal. Log: `~/logs/vps-cleanup.log`. |
-| `vps-update-images.sh` | Sun 05:30 | Pulls + recreates only the third-party-image projects (`note-sx`, `karakeep-app`), taking the same `~/.cache/vps-deploy.lock` as `vps-deploy.sh`, snapshotting their data to `~/backups/<app>/` (3 generations) and re-tagging the recorded image IDs if a project is unhealthy afterwards. Log: `~/logs/vps-update-images.log`. |
+| `vps-cleanup.sh` | Sun 04:30 | Caps the Docker build cache at 3 GB with `--max-used-space` (`--keep-storage` is a floor, not a cap on current docker), removes images no container uses **except** the protected build bases (the Playwright image `greek_embassy_bot` builds from), clears runner/npm/apt caches, runs `autoremove`, caps the journal (soft — active files are exempt). Takes the same `~/.cache/vps-deploy.lock` as `vps-deploy.sh` and exits non-zero if a step failed. Log: `~/logs/vps-cleanup.log`. |
+| `vps-update-images.sh` | Sun 05:30 | Stops each third-party-image project (`note-sx`, `karakeep-app`) for a consistent snapshot, verifies the archive with `tar -tzf`, then pulls + recreates, health-checks, and re-tags the recorded image IDs if a project ends up unhealthy. Data snapshots go to `~/backups/<app>/` (3 generations). Log: `~/logs/vps-update-images.log`. |
 | `herdr-server.service` | always | Keeps the headless Herdr server running so `hvps` works after a reboot; `Restart=on-failure` so an explicit `herdr server stop` stays stopped. |
-| `apt/50unattended-upgrades` + `apt/51-vps-auto-updates` | daily | Allowed origins are the base, security and ESM pockets (all updates install unattended); `51-` adds `Automatic-Reboot "true"` at `03:30` with users allowed, plus `Remove-Unused-Kernel-Packages`. The deploy also deletes any stray `50unattended-upgrades.bak-*`, which is what makes apt print `N: Ignoring file … invalid filename extension`. |
+| `vps/apt/51-vps-auto-updates` | daily | The VPS is the only thing that states the policy: apt merges `Allowed-Origins` from every file in `apt.conf.d`, so this file lists the base, security and ESM pockets (all updates install unattended) and adds `Automatic-Reboot "true"` at `03:30` with users allowed, plus `Remove-Unused-Kernel-Packages`. The package's own `50unattended-upgrades` (shipped from `/usr/share/unattended-upgrades/`) is deliberately not managed here; the deploy deletes stray `50unattended-upgrades.bak-*` copies, which is what made apt print `N: Ignoring file … invalid filename extension`. |
 
 Both weekly jobs are `Persistent=true` user timers (`linger` is on for `diab`), and both are
 `--dry-run`-able. Locally built images and the push-to-deploy path are never touched by them.

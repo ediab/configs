@@ -15,7 +15,11 @@
 #   vps-cleanup.sh, vps-update-images.sh     weekly upkeep   -> ~/bin/ (chmod +x)
 #   systemd/*.service, systemd/*.timer       user units      -> ~/.config/systemd/user/
 #   apps-AGENTS.md                           app-root doc    -> ~/apps/AGENTS.md
-#   apt/50unattended-upgrades, apt/51-...    update policy   -> /etc/apt/apt.conf.d/ (sudo)
+#   vps/apps-AGENTS.md                        app-root doc    -> ~/apps/AGENTS.md
+#   apt/51-vps-auto-updates                    update policy   -> /etc/apt/apt.conf.d/ (sudo)
+#
+# Note: /etc/apt/apt.conf.d/50unattended-upgrades is NOT deployed — it belongs to the
+# package (shipped from /usr/share/unattended-upgrades/). Only our own 51- file is managed.
 #
 #   .zshrc     zsh: oh-my-zsh + plugins, PATH, aliases (mode 600 on the VPS)
 #   .zshenv    PATH for *every* zsh invocation — must stay output-free (a single
@@ -39,7 +43,7 @@ SRC="$(cd "$(dirname "$0")" && pwd)"
 FILES=(.zshrc .zshenv .p10k.zsh .tmux.conf)
 SCRIPTS=(vps-cleanup.sh vps-update-images.sh)
 UNITS=(vps-cleanup.service vps-cleanup.timer vps-update-images.service vps-update-images.timer herdr-server.service)
-APT_FILES=(50unattended-upgrades 51-vps-auto-updates)
+APT_FILES=(51-vps-auto-updates)
 
 for f in "${FILES[@]}"; do
     [ -f "$SRC/$f" ] || { echo "Not found: $SRC/$f" >&2; exit 1; }
@@ -86,10 +90,12 @@ echo "==> apt update/reboot policy -> /etc/apt/apt.conf.d"
 for f in "${APT_FILES[@]}"; do
     scp -q "$SRC/apt/$f" "$HOST:/tmp/$f"
 done
-# Installed as root-owned 0644; needs the passwordless sudo this user has.
-ssh "$HOST" 'for f in 50unattended-upgrades 51-vps-auto-updates; do sudo install -m 644 -o root -g root "/tmp/$f" "/etc/apt/apt.conf.d/$f"; done; rm -f /tmp/50unattended-upgrades /tmp/51-vps-auto-updates'
-# A hand-made copy that made apt print "N: Ignoring file ... invalid filename extension".
-ssh "$HOST" 'sudo rm -f /etc/apt/apt.conf.d/50unattended-upgrades.bak-20260914'
+# Installed as root-owned 0644; needs the passwordless sudo this user has. The package's
+# own 50unattended-upgrades is left alone — apt merges our origins with it.
+ssh "$HOST" 'for f in 51-vps-auto-updates; do sudo install -m 644 -o root -g root "/tmp/$f" "/etc/apt/apt.conf.d/$f"; done; rm -f /tmp/51-vps-auto-updates'
+# Hand-made copies of the package file, which made apt print
+# "N: Ignoring file … invalid filename extension".
+ssh "$HOST" 'sudo find /etc/apt/apt.conf.d -maxdepth 1 -name "50unattended-upgrades.bak-*" -delete'
 
 echo "==> enable timers and the herdr server unit"
 ssh "$HOST" 'sudo loginctl enable-linger "$USER" 2>/dev/null || true'
