@@ -73,6 +73,10 @@ These are pushed to the VPS by script (not symlinked — nothing on the VPS read
 |-----------|---------------|--------------------------|
 | `herdr/config.vps.toml` | `herdr/deploy-vps.sh` | `~/.config/herdr/config.toml` |
 | `vps/.zshrc`, `vps/.zshenv`, `vps/.p10k.zsh`, `vps/.tmux.conf` | `vps/deploy-vps.sh` | `~/` |
+| `vps/vps-cleanup.sh`, `vps/vps-update-images.sh` | `vps/deploy-vps.sh` | `~/bin/` (run by user timers) |
+| `vps/systemd/*.service`, `vps/systemd/*.timer` | `vps/deploy-vps.sh` | `~/.config/systemd/user/` |
+| `vps/apt/50unattended-upgrades`, `vps/apt/51-vps-auto-updates` | `vps/deploy-vps.sh` | `/etc/apt/apt.conf.d/` (sudo) |
+| `vps/apps-AGENTS.md` | `vps/deploy-vps.sh` | `~/apps/AGENTS.md` |
 | `nvim/` | `nvim/deploy-vps.sh` | `~/.config/nvim` |
 
 The `vps/` files are captured byte-for-byte from the box, so `diff` against the VPS shows drift. Run the deploy with no local edits to re-align it.
@@ -80,6 +84,21 @@ The `vps/` files are captured byte-for-byte from the box, so `diff` against the 
 The Neovim config is pushed as files only: plugins, LSP servers and state live in
 `~/.local/share/nvim` and are machine-local, so a fresh VPS needs one
 `nvim --headless "+Lazy! sync" +qa` against the network.
+
+### VPS upkeep on the box
+
+`vps/deploy-vps.sh` also installs the box's own maintenance, so it is all versioned here
+rather than hand-made on the server:
+
+| What | When | Notes |
+|------|------|-------|
+| `vps-cleanup.sh` | Sun 04:30 | Trims the Docker build cache to a 3 GB ceiling, removes images no container uses **except** the protected build bases (the Playwright image `greek_embassy_bot` builds from), clears runner/npm/apt caches, caps the journal. Log: `~/logs/vps-cleanup.log`. |
+| `vps-update-images.sh` | Sun 05:30 | Pulls + recreates only the third-party-image projects (`note-sx`, `karakeep-app`), taking the same `~/.cache/vps-deploy.lock` as `vps-deploy.sh`, snapshotting their data to `~/backups/<app>/` (3 generations) and re-tagging the recorded image IDs if a project is unhealthy afterwards. Log: `~/logs/vps-update-images.log`. |
+| `herdr-server.service` | always | Keeps the headless Herdr server running so `hvps` works after a reboot; `Restart=on-failure` so an explicit `herdr server stop` stays stopped. |
+| `apt/50unattended-upgrades` + `apt/51-vps-auto-updates` | daily | Allowed origins are the base, security and ESM pockets (all updates install unattended); `51-` adds `Automatic-Reboot "true"` at `03:30` with users allowed, plus `Remove-Unused-Kernel-Packages`. The deploy also deletes any stray `50unattended-upgrades.bak-*`, which is what makes apt print `N: Ignoring file … invalid filename extension`. |
+
+Both weekly jobs are `Persistent=true` user timers (`linger` is on for `diab`), and both are
+`--dry-run`-able. Locally built images and the push-to-deploy path are never touched by them.
 
 ### Automatic deploy
 
