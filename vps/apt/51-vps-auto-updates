@@ -1,0 +1,22 @@
+// VPS update policy — the delta on top of 50unattended-upgrades.
+//
+// 50unattended-upgrades (versioned next to this file) carries the allowed origins:
+// the base pocket plus security and ESM, so general updates install unattended.
+// This file adds only the VPS-specific behaviour.
+//
+// Deployed by vps/deploy-vps.sh (sudo install) from the configs repo — edit it there,
+// never on the VPS, or the next deploy overwrites you.
+// `~/apps/AGENTS.md` documents this as "50unattended-upgrades plus 51-vps-auto-updates".
+
+Unattended-Upgrade::Automatic-Reboot "true";
+
+// Reboot even with a user logged in. Consequence: an active mosh/ssh session is cut at
+// the window below. Deploys are protected from this by the shutdown inhibit in
+// ~/bin/vps-deploy.sh, so a reboot waits for an in-flight deploy to finish.
+Unattended-Upgrade::Automatic-Reboot-WithUsers "true";
+
+Unattended-Upgrade::Automatic-Reboot-Time "03:30";
+
+// Reboots leave the previous kernel behind; let the updater reap them instead of
+// accumulating ~90 MB per kernel.
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
