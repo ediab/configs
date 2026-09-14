@@ -74,3 +74,26 @@ These are pushed to the VPS by script (not symlinked — nothing on the VPS read
 | `vps/.zshrc`, `vps/.zshenv`, `vps/.p10k.zsh`, `vps/.tmux.conf` | `vps/deploy-vps.sh` | `~/` |
 
 The `vps/` files are captured byte-for-byte from the box, so `diff` against the VPS shows drift. Run the deploy with no local edits to re-align it.
+
+### Automatic deploy
+
+Both deploys above — plus `~/dev/pi-dotfiles/deploy-vps.sh` — run from one launch agent,
+`launchd/com.diab.sync-vps.plist`, every 15 minutes (and at login):
+
+```sh
+cp ~/dev/configs/launchd/com.diab.sync-vps.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.diab.sync-vps.plist
+```
+
+`bin/sync-vps.sh` gates on the deployed source paths (`~/dev/pi-dotfiles/home`,
+`~/dev/pi-dotfiles/deploy-vps.sh`, `vps/`, `herdr/config.vps.toml`) against
+`~/.cache/sync-vps.stamp`, so a tick with no edits costs nothing:
+
+```sh
+~/dev/configs/bin/sync-vps.sh            # deploy now if anything changed
+~/dev/configs/bin/sync-vps.sh --force    # deploy regardless (also use this to re-align drift)
+```
+
+All three steps run even when one fails, and the stamp only advances when every step
+succeeded — so a failure retries on the next tick, notifies once an hour, and logs to
+`/tmp/com.diab.sync-vps.{out,err}`.

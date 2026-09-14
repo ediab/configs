@@ -21,6 +21,7 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 | `rpiv-advisor/advisor.json` | `~/.config/rpiv-advisor/advisor.json` | Pi advisor extension: reviewer model, effort, model blocklist, guidance |
 | `herdr/config.vps.toml` | _(none — deploy via `herdr/deploy-vps.sh`)_ | Herdr config for the VPS (`ssh vps`), headless toast delivery |
 | `vps/` | _(none — deploy via `vps/deploy-vps.sh`)_ | VPS shell dotfiles (`.zshrc`, `.zshenv`, `.p10k.zsh`, `.tmux.conf`) for `ssh vps` |
+| `bin/sync-vps.sh` | _(none — runs as `com.diab.sync-vps`)_ | Syncs the `pi-dotfiles`, `vps/`, and `herdr/` deploys to `ssh vps` |
 | `firefox/` | _(none — sync via `firefox/sync.sh`)_ | Firefox profile configs (prefs, chrome CSS, extensions, bookmarks) |
 
 ## Docs
@@ -40,6 +41,28 @@ launchctl load ~/Library/LaunchAgents/com.diab.autocommit-configs.plist
 ```
 
 This also keeps `vscode/extensions.txt` up to date automatically.
+
+## VPS sync
+
+A second launch agent pushes the VPS deploys every 15 minutes (and at login):
+
+```sh
+cp ~/dev/configs/launchd/com.diab.sync-vps.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.diab.sync-vps.plist
+```
+
+`bin/sync-vps.sh` runs the three deploys — `~/dev/pi-dotfiles/deploy-vps.sh` (pi harness),
+`vps/deploy-vps.sh`, `herdr/deploy-vps.sh` — but only when something under their source
+paths changed since the last successful run, so an idle tick makes no SSH connection.
+
+```sh
+~/dev/configs/bin/sync-vps.sh            # deploy now if anything changed
+~/dev/configs/bin/sync-vps.sh --force    # deploy regardless
+```
+
+A failing step never blocks the others, the stamp (`~/.cache/sync-vps.stamp`) only advances
+when all three succeeded, and a failure raises a macOS notification at most once an hour.
+Logs: `/tmp/com.diab.sync-vps.{out,err}`.
 
 ## Setup on a new machine
 
@@ -63,6 +86,10 @@ brew bundle --file=~/dev/configs/Brewfile
 # Auto-commit agent
 cp ~/dev/configs/launchd/com.diab.autocommit-configs.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.diab.autocommit-configs.plist
+
+# VPS sync agent
+cp ~/dev/configs/launchd/com.diab.sync-vps.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.diab.sync-vps.plist
 ```
 
 ## Firefox
