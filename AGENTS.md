@@ -17,6 +17,7 @@ Dotfiles and configs for shell, terminal, editor, and Firefox. This is the sourc
 | `rpiv-advisor/advisor.json` | `~/.config/rpiv-advisor/advisor.json` |
 | `vscode/settings.json` | `~/Library/Application Support/Code/User/settings.json` |
 | `vscode/keybindings.json` | `~/Library/Application Support/Code/User/keybindings.json` |
+| `nvim/` | `~/.config/nvim` |
 
 ## Firefox (not symlinked — sync via script)
 
@@ -72,12 +73,17 @@ These are pushed to the VPS by script (not symlinked — nothing on the VPS read
 |-----------|---------------|--------------------------|
 | `herdr/config.vps.toml` | `herdr/deploy-vps.sh` | `~/.config/herdr/config.toml` |
 | `vps/.zshrc`, `vps/.zshenv`, `vps/.p10k.zsh`, `vps/.tmux.conf` | `vps/deploy-vps.sh` | `~/` |
+| `nvim/` | `nvim/deploy-vps.sh` | `~/.config/nvim` |
 
 The `vps/` files are captured byte-for-byte from the box, so `diff` against the VPS shows drift. Run the deploy with no local edits to re-align it.
 
+The Neovim config is pushed as files only: plugins, LSP servers and state live in
+`~/.local/share/nvim` and are machine-local, so a fresh VPS needs one
+`nvim --headless "+Lazy! sync" +qa` against the network.
+
 ### Automatic deploy
 
-Both deploys above — plus `~/dev/pi-dotfiles/deploy-vps.sh` — run from one launch agent,
+The deploys above — plus `~/dev/pi-dotfiles/deploy-vps.sh` — run from one launch agent,
 `launchd/com.diab.sync-vps.plist`, every 15 minutes (and at login):
 
 ```sh
@@ -86,7 +92,7 @@ launchctl load ~/Library/LaunchAgents/com.diab.sync-vps.plist
 ```
 
 `bin/sync-vps.sh` gates on the deployed source paths (`~/dev/pi-dotfiles/home`,
-`~/dev/pi-dotfiles/deploy-vps.sh`, `vps/`, `herdr/config.vps.toml`) against
+`~/dev/pi-dotfiles/deploy-vps.sh`, `vps/`, `herdr/config.vps.toml`, `nvim/`) against
 `~/.cache/sync-vps.stamp`, so a tick with no edits costs nothing:
 
 ```sh
@@ -94,6 +100,6 @@ launchctl load ~/Library/LaunchAgents/com.diab.sync-vps.plist
 ~/dev/configs/bin/sync-vps.sh --force    # deploy regardless (also use this to re-align drift)
 ```
 
-All three steps run even when one fails, and the stamp only advances when every step
+All four steps run even when one fails, and the stamp only advances when every step
 succeeded — so a failure retries on the next tick, notifies once an hour, and logs to
 `/tmp/com.diab.sync-vps.{out,err}`.

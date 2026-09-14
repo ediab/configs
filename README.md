@@ -19,9 +19,10 @@ Dotfiles and terminal/editor configuration, versioned for sync across machines.
 | `herdr/plugins.txt` | _(none — regenerated via `herdr plugin list`)_ | Installed Herdr plugin list |
 | `herdr/config.toml` | `~/.config/herdr/config.toml` | Herdr config (keybindings, UI) |
 | `rpiv-advisor/advisor.json` | `~/.config/rpiv-advisor/advisor.json` | Pi advisor extension: reviewer model, effort, model blocklist, guidance |
+| `nvim/` | `~/.config/nvim` | Neovim config (LazyVim: `init.lua`, `lua/`, pinned `lazy-lock.json`) |
 | `herdr/config.vps.toml` | _(none — deploy via `herdr/deploy-vps.sh`)_ | Herdr config for the VPS (`ssh vps`), headless toast delivery |
-| `vps/` | _(none — deploy via `vps/deploy-vps.sh`)_ | VPS shell dotfiles (`.zshrc`, `.zshenv`, `.p10k.zsh`, `.tmux.conf`) for `ssh vps` |
-| `bin/sync-vps.sh` | _(none — runs as `com.diab.sync-vps`)_ | Syncs the `pi-dotfiles`, `vps/`, and `herdr/` deploys to `ssh vps` |
+| `nvim/` | _(also symlinked above — deploy via `nvim/deploy-vps.sh`)_ | Neovim config for `ssh vps` (plugins stay in the VPS `~/.local/share/nvim`) |
+| `bin/sync-vps.sh` | _(none — runs as `com.diab.sync-vps`)_ | Syncs the `pi-dotfiles`, `vps/`, `herdr/`, and `nvim/` deploys to `ssh vps` |
 | `firefox/` | _(none — sync via `firefox/sync.sh`)_ | Firefox profile configs (prefs, chrome CSS, extensions, bookmarks) |
 
 ## Docs
@@ -51,9 +52,10 @@ cp ~/dev/configs/launchd/com.diab.sync-vps.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/com.diab.sync-vps.plist
 ```
 
-`bin/sync-vps.sh` runs the three deploys — `~/dev/pi-dotfiles/deploy-vps.sh` (pi harness),
-`vps/deploy-vps.sh`, `herdr/deploy-vps.sh` — but only when something under their source
-paths changed since the last successful run, so an idle tick makes no SSH connection.
+`bin/sync-vps.sh` runs the four deploys — `~/dev/pi-dotfiles/deploy-vps.sh` (pi harness),
+`vps/deploy-vps.sh`, `herdr/deploy-vps.sh`, `nvim/deploy-vps.sh` — but only when something
+under their source paths changed since the last successful run, so an idle tick makes no
+SSH connection.
 
 ```sh
 ~/dev/configs/bin/sync-vps.sh            # deploy now if anything changed
@@ -61,7 +63,7 @@ paths changed since the last successful run, so an idle tick makes no SSH connec
 ```
 
 A failing step never blocks the others, the stamp (`~/.cache/sync-vps.stamp`) only advances
-when all three succeeded, and a failure raises a macOS notification at most once an hour.
+when all four succeeded, and a failure raises a macOS notification at most once an hour.
 Logs: `/tmp/com.diab.sync-vps.{out,err}`.
 
 ## Setup on a new machine
@@ -75,6 +77,7 @@ ln -s ~/dev/configs/.tmux.conf ~/.tmux.conf
 ln -s ~/dev/configs/starship.toml ~/.config/starship.toml
 ln -s ~/dev/configs/ghostty/config ~/.config/ghostty/config
 ln -s ~/dev/configs/herdr/config.toml ~/.config/herdr/config.toml
+ln -s ~/dev/configs/nvim ~/.config/nvim
 mkdir -p ~/.config/rpiv-advisor
 ln -s ~/dev/configs/rpiv-advisor/advisor.json ~/.config/rpiv-advisor/advisor.json
 ln -s ~/dev/configs/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
